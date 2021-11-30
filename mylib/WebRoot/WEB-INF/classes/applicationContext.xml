@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd ">
+
+    <!-- 整合hibernate-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"                                                 lazy-init="false">
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+    </bean>
+    
+    <!--   spring利用aop事务控制-->
+	<!-- 添加事务支持 -->
+	<bean  id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	  <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 定义事务通知 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<!-- 定义事务传播规则 -->
+	 <tx:attributes>
+	 <!-- 对所有方法都应用REQUIRED事务规则 -->
+	   <tx:method name="*" propagation="REQUIRED"/>
+	 </tx:attributes>
+	</tx:advice>
+	<!-- 定义一个切面，并将事务通知和切面组合 -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut expression="execution(public * com.service.*.*(..))" id="biz"/>
+		<!-- 将事务通知和切面组合 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="biz"/>
+		<aop:advisor
+			pointcut="execution(public * com..*service..*Service*Impl.*(..))"
+			advice-ref="txAdvice" />
+	</aop:config>
+    <!--    注解-->
+    <context:component-scan base-package="com"></context:component-scan>
+
+    <!--    注入servcie-->
+    <bean id="commonServiceImpl" class="com.service.spring.CommonServiceImpl" scope="prototype">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+     
+    <!--    注入action-->
+    <bean id="loginAction" class="com.action.LoginAction" scope="prototype">
+    	<property name="commonService" ref="commonServiceImpl"></property>
+    </bean>
+    <bean id="managerAction" class="com.action.ManagerAction" scope="prototype">
+    	<property name="commonService" ref="commonServiceImpl"></property>
+    </bean>
+</beans>

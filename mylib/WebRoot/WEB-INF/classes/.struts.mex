@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="login" location="183,10" size="280,245">
+    <action name="login" location="65,47" size="150,62">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="index.jsp" />
+      </result>
+      <result name="input">
+        <resourceEdge source="input" routing="0" target="login.jsp" />
+      </result>
+    </action>
+    <action name="loginOut" location="65,162" size="150,41">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="login.jsp" />
+      </result>
+    </action>
+    <action name="addBook" location="0,0" size="0,0">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="index.jsp" />
+      </result>
+    </action>
+    <action name="delBook" location="0,0" size="0,0">
+      <result name="success" />
+    </action>
+    <action name="findBooks" location="0,0" size="0,0">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="BookList.jsp" />
+      </result>
+    </action>
+  </package>
+  <webResource name="index.jsp" path="/html/index.jsp" location="498,30" size="150,55" />
+  <webResource name="login.jsp" path="/html/login.jsp" location="10,30" size="150,55" />
+  <webResource name="BookList.jsp" path="/html/BookList.jsp" location="0,0" size="0,0" />
+</Struts2Diagram>
+

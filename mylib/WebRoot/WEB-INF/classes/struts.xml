@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+    
+<struts>
+  
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	
+	<package name="login" namespace="/" extends="struts-default">  
+		<!--登录-->
+		<action name="login" class="loginAction" method="login">
+			<result name="success">/html/index.jsp</result>
+			<result name="input">/html/login.jsp</result>
+		</action>
+		     
+		<!--退出-->
+		<action name="loginOut" class="loginAction" method="loginOut">
+			<result name="success">/html/login.jsp</result>
+		</action>
+		
+		<!--添加-->
+		<action name="addBook" class="managerAction" method="addBook">
+			<result name="success">/html/index.jsp</result>
+		</action>
+		<action name="updateBook" class="managerAction" method="updateBook">
+			<result name="success">/html/BookInfo.jsp</result>
+		</action>
+		<!--删除-->
+		<action name="delBook" class="managerAction" method="delBook">
+			<result name="success" type="chain">findBooks</result>
+		</action>
+		<!--查看-->
+		<action name="findBooks" class="managerAction" method="findBooks">
+			<result name="success">/html/BookList.jsp</result>
+		</action>
+   </package>
+
+</struts>
